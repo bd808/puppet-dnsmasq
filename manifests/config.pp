@@ -4,7 +4,7 @@
 #
 #   include dnsmasq::config
 class dnsmasq::config {
-  require homebrew::config
+  include homebrew::config
 
   $configroot = "${homebrew::config::installdir}/etc"
   $configfile = "${configroot}/dnsmasq.conf"

@@ -3,7 +3,7 @@ define dnsmasq::address(
   $ensure = 'present',
   $priority = 10,
 ){
-  include dnsmasq
+  include dnsmasq::config
 
   file { "${dnsmasq::config::configdir}/${priority}-${name}":
     ensure => $ensure,

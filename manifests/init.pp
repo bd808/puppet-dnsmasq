@@ -6,7 +6,6 @@
 class dnsmasq {
   require homebrew
   require dnsmasq::config
-  require dnsmasq::address
 
   file { "${dnsmasq::config::configfile}":
     notify  => Service['dnsmasq'],
