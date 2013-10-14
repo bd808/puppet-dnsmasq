@@ -6,54 +6,28 @@
 class dnsmasq {
   require homebrew
   require dnsmasq::config
+  require dnsmasq::address
 
-  file { [$dnsmasq::config::configdir, $dnsmasq::config::logdir]:
-    ensure => directory
+  file { "${dnsmasq::config::configfile}":
+    notify  => Service['dnsmasq'],
+    source  => template('/dnsmasq/dnsmasq.conf.erb')
   }
 
-  file { "${dnsmasq::config::configdir}/dnsmasq.conf":
-    notify  => Service['dev.dnsmasq'],
-    require => File[$dnsmasq::config::configdir],
-    source  => 'puppet:///modules/dnsmasq/dnsmasq.conf'
+  file { "${dnsmasq::config::configdir}":
+    ensure  => directory,
+    notify  => Service['dnsmasq'],
+    require => File[$dnsmasq::config::configroot],
   }
 
-  file { '/Library/LaunchDaemons/dev.dnsmasq.plist':
-    content => template('dnsmasq/dev.dnsmasq.plist.erb'),
-    group   => 'wheel',
-    notify  => Service['dev.dnsmasq'],
-    owner   => 'root'
+  package { 'dnsmasq':
+    ensure => 'latest',
+    notify => Service['dnsmasq']
   }
 
-  file { '/etc/resolver':
-    ensure => directory,
-    group  => 'wheel',
-    owner  => 'root'
-  }
-
-  file { '/etc/resolver/dev':
-    content => 'nameserver 127.0.0.1',
-    group   => 'wheel',
-    owner   => 'root',
-    require => File['/etc/resolver'],
-    notify  => Service['dev.dnsmasq'],
-  }
-
-  homebrew::formula { 'dnsmasq':
-    before => Package['boxen/brews/dnsmasq'],
-  }
-
-  package { 'boxen/brews/dnsmasq':
-    ensure => '2.57-boxen1',
-    notify => Service['dev.dnsmasq']
-  }
-
-  service { 'dev.dnsmasq':
+  service { 'dnsmasq':
     ensure  => running,
-    require => Package['boxen/brews/dnsmasq']
+    require => Package['dnsmasq']
   }
 
-  service { 'com.boxen.dnsmasq': # replaced by dev.dnsmasq
-    before => Service['dev.dnsmasq'],
-    enable => false
-  }
+  dnsmasq::address { 'dev': }
 }
