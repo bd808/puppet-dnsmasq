@@ -1,9 +1,9 @@
-class dnsmasq::address(
+define dnsmasq::address(
   $ipaddr = '127.0.0.1',
   $ensure = 'present',
   $priority = 10,
 ){
-  require dnsmasq
+  include dnsmasq
 
   file { "${dnsmasq::config::configdir}/${priority}-${name}":
     ensure => $ensure,
