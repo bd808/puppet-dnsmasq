@@ -18,6 +18,12 @@ class dnsmasq {
     require => File[$dnsmasq::config::configroot],
   }
 
+  file { '/etc/resolver':
+    ensure => directory,
+    group  => 'wheel',
+    owner  => 'root'
+  }
+
   package { 'dnsmasq':
     ensure => 'latest',
     notify => Service['dnsmasq']

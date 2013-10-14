@@ -11,12 +11,6 @@ define dnsmasq::address(
     notify => Service['dnsmasq'],
   }
 
-  file { '/etc/resolver':
-    ensure => directory,
-    group  => 'wheel',
-    owner  => 'root'
-  }
-
   file { "/etc/resolver/${name}":
     content => 'nameserver 127.0.0.1',
     group   => 'wheel',
