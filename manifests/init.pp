@@ -9,7 +9,7 @@ class dnsmasq {
 
   file { "${dnsmasq::config::configfile}":
     notify  => Service['dnsmasq'],
-    source  => template('dnsmasq/dnsmasq.conf.erb')
+    content  => template('dnsmasq/dnsmasq.conf.erb')
   }
 
   file { "${dnsmasq::config::configdir}":
