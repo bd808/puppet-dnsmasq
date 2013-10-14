@@ -15,7 +15,6 @@ class dnsmasq {
   file { "${dnsmasq::config::configdir}":
     ensure  => directory,
     notify  => Service['dnsmasq'],
-    require => File[$dnsmasq::config::configroot],
   }
 
   file { '/etc/resolver':
