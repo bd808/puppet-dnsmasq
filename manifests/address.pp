@@ -8,7 +8,7 @@ define dnsmasq::address(
   file { "${dnsmasq::config::configdir}/${priority}-${name}":
     ensure => $ensure,
     content => "address=/${name}/${ipaddr}",
-    notify => Service['dnsmasq'],
+    notify => Service['dev.dnsmasq'],
   }
 
   file { "/etc/resolver/${name}":
@@ -16,6 +16,6 @@ define dnsmasq::address(
     group   => 'wheel',
     owner   => 'root',
     require => File['/etc/resolver'],
-    notify  => Service['dnsmasq'],
+    notify  => Service['dev.dnsmasq'],
   }
 }
