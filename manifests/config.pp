@@ -9,6 +9,7 @@ class dnsmasq::config {
   $configroot = "${homebrew::config::installdir}/etc"
   $configfile = "${configroot}/dnsmasq.conf"
   $configdir  = "${configroot}/dnsmasq.d"
+  $executable = "${homebrew::config::installdir}/opt/dnsmasq/sbin//dnsmasq"
 
   anchor { [
     $configroot,

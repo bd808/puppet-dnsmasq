@@ -23,12 +23,19 @@ class dnsmasq {
     owner  => 'root'
   }
 
+  file { '/Library/LaunchDaemons/dev.dnsmasq.plist':
+    content => template('dnsmasq/dev.dnsmasq.plist.erb'),
+    group   => 'wheel',
+    notify  => Service['dev.dnsmasq'],
+    owner   => 'root'
+  }
+
   package { 'dnsmasq':
     ensure => 'latest',
     notify => Service['dnsmasq']
   }
 
-  service { 'dnsmasq':
+  service { 'dev.dnsmasq':
     ensure  => running,
     require => Package['dnsmasq']
   }
